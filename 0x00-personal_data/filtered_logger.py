@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Definition of filter_datum function that 
+"""Definition of filter_datum function that
 returns an obfuscated log message
 """
 
@@ -18,5 +18,7 @@ def filter_datum(fields: List[str], redaction: str,
         message (str): A str representing the log message.
         separator (str): the character that separates fields in the log msg.
     """
-    return re.sub(fr'(?<=^{separator}|{separator})({"|".join(fields)})\
-                  (?={separator}|$)', redaction, message)
+    for field in fields:
+        message = re.sub(field+'=.*?'+separator,
+                         field+'='+redaction+separator, message)
+    return message
