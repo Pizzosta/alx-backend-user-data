@@ -56,9 +56,7 @@ class RedactingFormatter(logging.Formatter):
 
 
 def get_logger() -> logging.Logger:
-    """
-    Return a logging.Logger object
-    """
+    """Return a logging.Logger object"""
     logger = logging.getLogger("user_data")
     logger.setLevel(logging.INFO)
     logger.propagate = False
@@ -73,6 +71,7 @@ def get_logger() -> logging.Logger:
 
 
 def get_db():
+    """Connect to a database securely"""
     db_username = os.getenv("PERSONAL_DATA_DB_USERNAME", "root")
     db_password = os.getenv("PERSONAL_DATA_DB_PASSWORD", "")
     db_host = os.getenv("PERSONAL_DATA_DB_HOST", "localhost")
