@@ -18,7 +18,7 @@ class BasicAuth(Auth):
             return None
         if not authorization_header.startswith("Basic "):
             return None
-        base64_part = authorization_header.split(" ")[1]
+        base64_part = authorization_header.split(" ")[-1]
         return base64_part
 
     def decode_base64_authorization_header(self,
@@ -73,3 +73,27 @@ class BasicAuth(Auth):
             return None
         except Exception:
             None
+
+    def current_user(self, request=None) -> TypeVar('User'):
+        """ Get the current user from the request. """
+        if request is None:
+            return None
+
+        auth_header = self.authorization_header(request)
+        if auth_header is None:
+            return None
+
+        base64_part = self.extract_base64_authorization_header(auth_header)
+        if base64_part is None:
+            return None
+
+        decoded_value = self.decode_base64_authorization_header(base64_part)
+        if decoded_value is None:
+            return None
+
+        user_email, user_password = self.extract_user_credentials(
+            decoded_value)
+        if user_email is None or user_password is None:
+            return None
+
+        return self.user_object_from_credentials(user_email, user_password)
