@@ -48,12 +48,12 @@ class BasicAuth(Auth):
             return None, None
         if not isinstance(decoded_base64_authorization_header, str):
             return None, None
-        
+
         split_result = decoded_base64_authorization_header.split(':', 1)
         if len(split_result) != 2:
             return None, None
         user_email, user_password = split_result
-        
+
         return user_email, user_password
 
     def user_object_from_credentials(self, user_email: str,
