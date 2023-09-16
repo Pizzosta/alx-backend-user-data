@@ -3,10 +3,10 @@
 Route module for the API
 """
 from os import getenv
+import os
 from api.v1.views import app_views
 from flask import Flask, jsonify, abort, request
 from flask_cors import (CORS, cross_origin)
-import os
 
 
 app = Flask(__name__)
@@ -37,9 +37,14 @@ def before_request_handler():
         setattr(request, "current_user", auth.current_user(request))
 
         excluded_paths = ['/api/v1/status/',
-                          '/api/v1/unauthorized/', '/api/v1/forbidden/']
+                          '/api/v1/unauthorized/',
+                          '/api/v1/forbidden/',
+                          '/api/v1/auth_session/login/'
+                          ]
+
         if auth.require_auth(request.path, excluded_paths):
-            if auth.authorization_header(request) is None:
+            if auth.authorization_header(request) is None and \
+                    auth.session_cookie(request) is None:
                 abort(401, description="Unauthorized")
             if auth.current_user(request) is None:
                 abort(403, description="Forbidden")
