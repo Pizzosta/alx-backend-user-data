@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """ Definition of class SessionAuth Module """
 from uuid import uuid4
+from typing import TypeVar
+from models.user import User
 from .auth import Auth
 
 
@@ -30,3 +32,10 @@ class SessionAuth(Auth):
 
         user_id = self.user_id_by_session_id.get(session_id)
         return user_id
+
+    def current_user(self, request=None) -> TypeVar('User'):
+        """Returns a User instance based on a cookie value"""
+        session_cookie_name = self.session_cookie(request)
+        user_id = self.user_id_for_session_id(session_cookie_name)
+        user = User.get(user_id)
+        return user
