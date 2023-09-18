@@ -10,6 +10,10 @@ from os import getenv
 
 @app_views.route('/auth_session/login', methods=['POST'], strict_slashes=False)
 def auth_session_login() -> str:
+    """
+    Creates a new session after retrieving the user
+    from email and password
+    """
     from api.v1.app import auth
 
     email = request.form.get("email")
