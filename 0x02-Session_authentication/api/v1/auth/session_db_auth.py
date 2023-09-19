@@ -6,6 +6,7 @@ from models.user_session import UserSession
 
 
 class SessionDBAuth(SessionExpAuth):
+    """Session DB Auh class"""
     def create_session(self, user_id=None):
         """Create and store a new UserSession instance
         and return the Session ID.
