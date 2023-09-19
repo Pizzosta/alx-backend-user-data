@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+"""Definition of class UserSession Module """
+
 from models.base import Base
 
 
