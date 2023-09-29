@@ -47,7 +47,20 @@ class DB:
 
         return new_user
 
-    def find_user_by(self, **kwargs):
+    def find_user_by(self, **kwargs) -> User:
+        """
+        Find a user in the database based on the provided keyword arguments.
+
+        Args:
+        **kwargs (dict): Arbitrary keyword arguments used to filter the query.
+
+        Returns:
+        User: The first User object that matches the filter criteria.
+
+        Raises:
+        NoResultFound: If no user is found that matches the filter criteria.
+        InvalidRequestError: If invalid query arguments are passed.
+        """
         all_users = self._session.query(User)
         for k, v in kwargs.items():
             if k not in User.__dict__:
