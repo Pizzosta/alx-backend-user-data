@@ -17,12 +17,12 @@ def welcome() -> str:
 def register_user() -> str:
     """ Register new user by POST /users."""
     try:
-        email = request.form['email']
-        password = request.form['password']
+        email = request.form["email"]
+        password = request.form["password"]
         user = AUTH.register_user(email, password)
-        return jsonify({'email': user.email, 'message': 'user created'})
+        return jsonify({"email": user.email, "message": "user created"})
     except ValueError:
-        return jsonify({'message': "email already registered"}), 400
+        return jsonify({"message": "email already registered"}), 400
 
 
 if __name__ == "__main__":
