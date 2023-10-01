@@ -2,6 +2,7 @@
 """
 Definition of _hash_password function
 """
+import uuid
 import bcrypt
 from db import DB
 from user import User
@@ -21,6 +22,12 @@ def _hash_password(password: str) -> bytes:
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
 
     return hashed_password
+
+
+def _generate_uuid() -> str:
+    """Generate a new UUID and return it as a string."""
+    new_uuid = uuid.uuid4()
+    return str(new_uuid)
 
 
 class Auth:
@@ -65,6 +72,6 @@ class Auth:
         try:
             user = self._db.find_user_by(email=email)
             return bcrypt.checkpw(
-                    password.encode('utf-8'), user.hashed_password)
+                password.encode('utf-8'), user.hashed_password)
         except Exception:
             return False
