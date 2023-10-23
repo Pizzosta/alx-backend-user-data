@@ -39,6 +39,7 @@ def login() -> str:
 
     return response
 
+
 @app.route("/sessions", methods=["DELETE"], strict_slashes=False)
 def logout():
     """
