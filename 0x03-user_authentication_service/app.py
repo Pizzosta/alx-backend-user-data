@@ -79,22 +79,21 @@ def get_reset_password_token() -> str:
     return jsonify({"email": f"{email}", "reset_token": f"{reset_token}"})
 
 
-def update_password(self, reset_token: str, password: str) -> None:
+@app.route("/reset_password", methods=["PUT"], strict_slashes=False)
+def update_password() -> str:
     """
-    Updates a user's password
-    Args:
-        reset_token (str): reset_token issued to reset the password
-        password (str): user's new password
-    Return:
-        None
+    Update a user's password
     """
-    try:
-        user = self._db.find_user_by(reset_token=reset_token)
-    except NoResultFound:
-        raise ValueError()
+    email = request.form.get("email")
+    reset_token = request.form.get("reset_token")
+    new_password = request.form.get("new_password")
 
-    hashed = _hash_password(password)
-    self._db.update_user(user.id, hashed_password=hashed, reset_token=None)
+    try:
+        AUTH.update_password(reset_token, new_password)
+    except ValueError:
+        abort(403)
+
+    return jsonify({"email": f"{email}", "message": "Password updated"})
 
 
 if __name__ == "__main__":
